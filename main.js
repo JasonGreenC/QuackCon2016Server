@@ -289,7 +289,7 @@ server.start((err) => {
 
 
 var http = require("http");
-var url = "http://api.sportradar.us/nfl-ot1/games/c8dc876a-099e-4e95-93dc-0eb143c6954f/boxscore.json?api_key=6vgqj9xr6fqj2es2umvwcc35";
+var url = " http://api.sportradar.us/nfl-ot1/games/c8dc876a-099e-4e95-93dc-0eb143c6954f/pbp.json?api_key=6vgqj9xr6fqj2es2umvwcc35";
 
 // get is a simple wrapper for request()
 // which sets the http method to GET
@@ -316,11 +316,20 @@ var request = http.get(url, function (response) {
         //console.log(data.summary)
        var hometeam = ("Home Team: " + teams.home.name);
        var awayteam = ("Away Team: " + teams.away.name);
+       var homescore =
+       var awayscore =
        var venue = ("Venue: " + teams.venue.name);
+       var quarter = 
+
+
+
 
        publish(hometeam, "arn:aws:sns:us-west-2:164008979560:HapiTest")
-       //publish(awayteam, "arn:aws:sns:us-west-2:164008979560:HapiTest")
-      // publish(venue, "arn:aws:sns:us-west-2:164008979560:HapiTest")
+       publish(awayteam, "arn:aws:sns:us-west-2:164008979560:HapiTest")
+       publish(venue, "arn:aws:sns:us-west-2:164008979560:HapiTest")
         
     }); 
 }); 		
+
+
+
