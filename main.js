@@ -42,6 +42,7 @@ function publish(message, topicArn, cb) {
 	};
 	if (isObject) {
 		params.MessageStructure = 'json';
+		params.Message = JSON.stringify(message)
 	}
 	SNS.publish(params, function(err, data) {
 		if (err) {
@@ -314,17 +315,32 @@ var request = http.get(url, function (response) {
         //console.log(data.summary)
        var hometeam = ("Home Team: " + teams.home.name);
        var awayteam = ("Away Team: " + teams.away.name);
-       var homescore =
-       var awayscore =
+      // var homescore =
+       //var awayscore =
        var venue = ("Venue: " + teams.venue.name);
-       var quarter = 
+       //var quarter = 
 
 
 
+       publish({"default": "Hi", "APNS_SANDBOX": {
+       	"aps": {
+       		"content-available": 1,
+       		"hometeam": teams.home.name,
+       		"awayteam": teams.away.name,
+       		"homescore": teams.home.points,
+       		"awayscore": teams.away.points,
+       		"quarter": data.periods[0].number,
+       		"drivestart": data.periods[0].pbp.type
 
-       publish(hometeam, "arn:aws:sns:us-west-2:164008979560:HapiTest")
-       publish(awayteam, "arn:aws:sns:us-west-2:164008979560:HapiTest")
-       publish(venue, "arn:aws:sns:us-west-2:164008979560:HapiTest")
+       	}
+       }
+   }, "arn:aws:sns:us-west-2:164008979560:HapiTest");
+
+   console.log(teams.home.name + " " + teams.home.points + " " + data.periods[0].number + " " + data.periods[0].pbp[1].start_reason)
+
+      // publish(hometeam, "arn:aws:sns:us-west-2:164008979560:HapiTest")t
+       //publish(awayteam, "arn:aws:sns:us-west-2:164008979560:HapiTest")
+       //publish(venue, "arn:aws:sns:us-west-2:164008979560:HapiTest")
         
     }); 
 }); 		
