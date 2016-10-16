@@ -25,6 +25,9 @@ const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
 var topics = {}
+var counter = 18
+//var myVar = setInterval(function(){ publish() }, 1000);
+
 
 server.route({
 	method: 'GET',
@@ -50,6 +53,14 @@ function publish(message, topicArn, cb) {
 		params.MessageStructure = 'json';
 		params.Message = JSON.stringify(message)
 		params.Message = JSON.stringify(wrapper);
+		
+		/*if(counter == 20){
+			clearInterval(container);
+		}
+		else{
+			 counter = counter + 1
+		}*/
+console.log(counter);
 
 	}
 
@@ -333,25 +344,34 @@ var request = http.get(url, function (response) {
       // var homescore =
        //var awayscore =
        var venue = ("Venue: " + teams.venue.name);
-       //var quarter = 
+		var intervalID = setInterval(container, 30000);
 
-
-
-       publish({"default": "Hi", "APNS_SANDBOX": {
-       	"aps": {
-       		"content-available": 1,
+		function container(){
+		publish({
        		"hometeam": teams.home.name,
        		"awayteam": teams.away.name,
-       		"homescore": teams.home.points,
-       		"awayscore": teams.away.points,
-       		"quarter": data.periods[0].number,
-       		"drivestart": data.periods[0].pbp.type
+       		"homescore": data.periods[3].pbp[4].events[counter].home_points,
+       		"awayscore": data.periods[3].pbp[4].events[counter].away_points,
+       		"quarter": data.periods[3].number,
+       		"playdesc": data.periods[3].pbp[4].events[counter].alt_description,
+       		"possession": data.periods[3].pbp[4].events[counter].end_situation.possession.name,
+       		"fieldside": data.periods[3].pbp[4].events[counter].end_situation.location.name,
+       		"yardline": data.periods[3].pbp[4].events[counter].end_situation.location.yardline,
 
-       	}
-       }
-   }, "arn:aws:sns:us-west-2:164008979560:HapiTest");
+   }, "arn:aws:sns:us-west-2:164008979560:HapiTest")
 
-   console.log(teams.home.name + " " + teams.home.points + " " + data.periods[0].number + " " + data.periods[0].pbp[1].start_reason)
+			if(counter == 20){
+			clearInterval(intervalID)
+				}
+			else(counter= counter + 1)
+	}
+	intervalID
+
+		console.log(data.periods[3].pbp[4].events[counter].alt_description)
+
+
+
+
 
       // publish(hometeam, "arn:aws:sns:us-west-2:164008979560:HapiTest")t
        //publish(awayteam, "arn:aws:sns:us-west-2:164008979560:HapiTest")
