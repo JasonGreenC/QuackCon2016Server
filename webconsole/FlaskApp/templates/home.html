@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="section scoreboard">
+		<div class="container">
+
+			<!-- Team bar -->
+			<div class="row">
+				<div class="one-half column">
+					<center><h4 class="scoreboard heading">team one</h4></center>
+				</div>
+				<div class="one-half column">
+					<center><h4 class="scoreboard heading">team two</h4></center>
+				</div>
+			</div>
+
+			<!-- Totals -->
+			<div class="row">
+				<div class="one-half column">
+					<center> <p style="font-size: 60px">{{ score_one }}</p> </center>
+				</div>
+				<div class="one-half column">
+					<center> <p style="font-size: 60px">{{ score_two }}</p> </center>
+				</div>
+			</div>
+
+			<!-- FORM POST -->
+			<form action="/" method="post">
+			<!-- Choose -->
+			<div class="row">
+				<div class="one-full column">
+					<center>
+						<h5>Record play:</h5>
+						<select class="button-primary" name="team" id="team">
+							<option value="One">Team one</option>
+							<option value="Two">Team two</option>
+						</select>
+					</center>
+					
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="one-full column">
+					<center>
+						<input type="text" name="play" id="play" placeholder="Play" required>
+						<input type="text" name="detail" id="detail" placeholder="Describe the play" required/>
+					</center>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="one-full column">
+					<center>
+						<input type="integer" name="score_one" id="score_one" placeholder="Team 1 score" required/>
+						<input type="integer" name="score_two" id="score_two" placeholder="Team two score" required/>
+					</center>
+				</div>
+			</div>
+
+			<!-- Submit -->
+			<div class="row">
+				<div class="one-full column">
+					<center> <button class="button-primary">Submit</button> </center>
+				</div>
+			</div>
+			</form>
+
+		</div>
+
+	<div class="section logs">
+		<div class="container">
+			<div class="row">
+				<div class="one-full column">
+					<table class="u-full-width">
+						<thead>
+							<tr>
+								<th>Team</th>
+								<th>Play</th>
+								<th>Description</th>
+								<th>Team one score</th>
+								<th>Team two score</th>
+							</tr>
+						</thead>
+						<tbody>
+							{%for play in plays%}
+							<tr>
+								<td>{{play[0]}}</td>
+								<td>{{play[1]}}</td>
+								<td>{{play[2]}}</td>
+								<td>{{play[3]}}</td>
+								<td>{{play[4]}}</td>
+							</tr>
+							{%endfor%}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	</div>
+{% endblock %}
