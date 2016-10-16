@@ -41,7 +41,6 @@ function publish(message, topicArn, cb) {
 	let isObject = (typeof message !== null && typeof message === 'object')
 
 	var params = {
-		Message: message,
 		TopicArn: topicArn
 	};
 	if (isObject) {
@@ -62,6 +61,14 @@ function publish(message, topicArn, cb) {
 		}*/
 console.log(counter);
 
+	}
+	else {
+		let wrapper = {
+			'default': message,
+			'APNS': JSON.stringify({'aps': {'alert': message}}),
+			'APNS_SANDBOX': JSON.stringify({'aps': {'alert': message}})
+		}
+		params.Message = JSON.stringify(wrapper);
 	}
 
 	SNS.publish(params, function(err, data) {
@@ -89,6 +96,7 @@ server.route({
 				error: errorStrings.missingParam,
 				info: missing
 			};
+			console.log(error)
 			reply(error);
 			return;
 		}
@@ -97,6 +105,7 @@ server.route({
 				error: errorStrings.unknownTopic,
 				info: [query.topic]
 			}
+			console.log(error)
 			reply(error);
 			return;
 		}
