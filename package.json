@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.6.9",
+    "firebase": "^3.5.0",
     "hapi": "^15.1.1",
     "joi": "^9.1.1"
   }

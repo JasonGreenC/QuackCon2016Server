@@ -26,7 +26,14 @@ server.connection({ port: 3000 });
 
 var topics = {}
 var counter = 18
+var arraycount = -1
 //var myVar = setInterval(function(){ publish() }, 1000);
+var tutorialarray = [
+"A first down means the team has advanced the ball 10 yards from its starting position. A team has four downs to move the football 10 yards.",
+"",
+"A touchdown occurs when the football reaches the endzone at the end of the field. This automatically grants the team 6 points. This will be followed by either a field goal attempt or a 2 point conversion attempt. ",
+"The kick was blocked! This prevented the kicking team from getting an extra point."
+]
 
 
 server.route({
@@ -41,6 +48,7 @@ function publish(message, topicArn, cb) {
 	let isObject = (typeof message !== null && typeof message === 'object')
 
 	var params = {
+		Message: message,
 		TopicArn: topicArn
 	};
 	if (isObject) {
@@ -53,22 +61,9 @@ function publish(message, topicArn, cb) {
 		params.Message = JSON.stringify(message)
 		params.Message = JSON.stringify(wrapper);
 		
-		/*if(counter == 20){
-			clearInterval(container);
-		}
-		else{
-			 counter = counter + 1
-		}*/
+arraycount = arraycount + 1
 console.log(counter);
 
-	}
-	else {
-		let wrapper = {
-			'default': message,
-			'APNS': JSON.stringify({'aps': {'alert': message}}),
-			'APNS_SANDBOX': JSON.stringify({'aps': {'alert': message}})
-		}
-		params.Message = JSON.stringify(wrapper);
 	}
 
 	SNS.publish(params, function(err, data) {
@@ -96,7 +91,6 @@ server.route({
 				error: errorStrings.missingParam,
 				info: missing
 			};
-			console.log(error)
 			reply(error);
 			return;
 		}
@@ -105,7 +99,6 @@ server.route({
 				error: errorStrings.unknownTopic,
 				info: [query.topic]
 			}
-			console.log(error)
 			reply(error);
 			return;
 		}
@@ -353,7 +346,7 @@ var request = http.get(url, function (response) {
       // var homescore =
        //var awayscore =
        var venue = ("Venue: " + teams.venue.name);
-		var intervalID = setInterval(container, 30000);
+		var intervalID = setInterval(container, 15000);
 
 		function container(){
 		publish({
@@ -366,13 +359,19 @@ var request = http.get(url, function (response) {
        		"possession": data.periods[3].pbp[4].events[counter].end_situation.possession.name,
        		"fieldside": data.periods[3].pbp[4].events[counter].end_situation.location.name,
        		"yardline": data.periods[3].pbp[4].events[counter].end_situation.location.yardline,
+       		"tutorial":tutorialarray[arraycount],
+       		"down": data.periods[3].pbp[4].events[counter].start_situation.down
+
+       		//"tutialstring": "1st down means the other team gets the ball"
 
    }, "arn:aws:sns:us-west-2:164008979560:HapiTest")
 
 			if(counter == 20){
 			clearInterval(intervalID)
 				}
-			else(counter= counter + 1)
+			else(counter = counter + 1)
+			console.log(arraycount)
+			console.log(tutorialarray[arraycount])
 	}
 	intervalID
 
